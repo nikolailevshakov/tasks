@@ -9,10 +9,13 @@ import (
 )
 
 func main() {
-	input := readStdInputSlice()
+	// input := readStdInputSlice()
   // input := []string{"3", "3", "cba", "aaz", "2", "bc", "ab", "1", "a", "a"}
-  passwordChecks := originalPassword(input)
-  writeStdOutputSlice(passwordChecks)
+  // passwordChecks := originalPassword(input)
+  // writeStdOutputSlice(passwordChecks)
+  input := readStdInput()
+  num := happyOrder(input)
+  writeStdOutputString(num)
 }
 
 // Задание 4. Тренировочный раунд.
@@ -44,14 +47,14 @@ func compareStrings(firstHalf, secondHalf string) bool {
 func happyOrder(orderNum string) string {
   orderNumInt, _ := strconv.Atoi(orderNum)
   for i:=orderNumInt ; ; i++ {
-      if isPalindrom(i) {
+      if isPalindrome(i) {
         return strconv.Itoa(i-orderNumInt)
       }
   }
   return "No palindrom!"
 }
 
-func isPalindrom(num int) bool {
+func isPalindromeStack(num int) bool {
   numStr := strconv.Itoa(num)
   var reverseNumStr string
   for i:=len(numStr)-1; i>=0; i-- {
@@ -66,46 +69,105 @@ func isPalindrom(num int) bool {
   return false
 }
 
-
-// Задание 2. Тренировочный раунд.
-//TODO: Оптимизировать
-func forgottenPincode(numbers string) []string {
-  var pinOptions []string = strings.Split(numbers, "")
-  var pincodeCombinations []string
-
-  sortedPinOptionsInts := sortSlice(pinOptions)
-  pincodeCombinations = append(pincodeCombinations, sliceItoa(sortedPinOptionsInts, 0,1,2))
-  pincodeCombinations = append(pincodeCombinations, sliceItoa(sortedPinOptionsInts, 0,2,1))
-  pincodeCombinations = append(pincodeCombinations, sliceItoa(sortedPinOptionsInts, 1,0,2))
-  pincodeCombinations = append(pincodeCombinations, sliceItoa(sortedPinOptionsInts, 1,2,0))
-  pincodeCombinations = append(pincodeCombinations, sliceItoa(sortedPinOptionsInts, 2,0,1))
-  pincodeCombinations = append(pincodeCombinations, sliceItoa(sortedPinOptionsInts, 2,1,0))
-
-  return pincodeCombinations
+func isPalindrome(num int) bool {
+  if (num<0) {
+    return false
+  }
+  var reversed, remainder, original int
+  original = num
+  for ;num !=0; {
+    remainder = num % 10
+    reversed = reversed * 10 + remainder
+    num /= 10
+  }
+  return original == reversed
 }
 
-func sortSlice(stringPincode []string) []int {
+
+// Задание 2. Тренировочный раунд.
+//TODO: Причесать
+func forgottenPincode(numbers string) []int {
+  var pinOptionsDigits []string = strings.Split(numbers, "")
+  var pincodeCombinations []int
+
+  sortedPinOptionsInts := bubbleSortSlice(sliceStringsToSliceInts(pinOptionsDigits))
+  pincodeCombinations = sliceSlicesToSliceInts(permutations(sortedPinOptionsInts))
+
+  return bubbleSortSlice(pincodeCombinations)
+}
+
+func bubbleSortSlice(intsPincode []int) []int {
+  for j:=0; j<len(intsPincode)-1; j++ {
+    for i:=0; i<len(intsPincode)-1; i++ {
+      if intsPincode[i] > intsPincode[i+1] {
+        intsPincode[i], intsPincode[i+1] = intsPincode[i+1], intsPincode[i]
+      }
+    }
+  }
+  return intsPincode
+}
+
+func sliceStringsToSliceInts(stringsSlice []string) []int {
   var ints []int
-  for _, v := range stringPincode {
+  for _, v := range stringsSlice {
     num, _ := strconv.Atoi(v)
     ints = append(ints, num)
-  }
-
-  for i:=0; i<len(ints)-1; i++ {
-    if ints[i] > ints[i+1] {
-      ints[i], ints[i+1] = ints[i+1], ints[i]
-    }
-  }
-  for i:=0; i<len(ints)-1; i++ {
-    if ints[i] > ints[i+1] {
-      ints[i], ints[i+1] = ints[i+1], ints[i]
-    }
   }
   return ints
 }
 
+func sliceIntsToSliceStrings(intSlice []int) []string {
+  var stringsSlice []string
+  for _, v := range intSlice {
+    str := strconv.Itoa(v)
+    stringsSlice = append(stringsSlice, str)
+  }
+  return stringsSlice
+}
+
+func permutations(arr []int)[][]int{
+    var helper func([]int, int)
+    res := [][]int{}
+
+    helper = func(arr []int, n int){
+        if n == 1{
+            tmp := make([]int, len(arr))
+            copy(tmp, arr)
+            res = append(res, tmp)
+        } else {
+            for i := 0; i < n; i++{
+                helper(arr, n - 1)
+                if n % 2 == 1{
+                    tmp := arr[i]
+                    arr[i] = arr[n - 1]
+                    arr[n - 1] = tmp
+                } else {
+                    tmp := arr[0]
+                    arr[0] = arr[n - 1]
+                    arr[n - 1] = tmp
+                }
+            }
+        }
+    }
+    helper(arr, len(arr))
+    return res
+}
+
 func sliceItoa(ints []int, num1, num2, num3 int) string {
   return strconv.Itoa(ints[num1]) + strconv.Itoa(ints[num2]) + strconv.Itoa(ints[num3])
+}
+
+func sliceSlicesToSliceInts(sliceSlices [][]int) []int {
+  var result []int
+  for _, slice := range sliceSlices {
+    var numStr string
+    for _, d := range slice {
+      numStr += strconv.Itoa(d)
+    }
+    num, _ := strconv.Atoi(numStr)
+    result = append(result, num)
+  }
+  return result
 }
 
 // Задание 1. Тренировочный раунд.
