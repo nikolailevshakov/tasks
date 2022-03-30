@@ -20,10 +20,11 @@ func originalPassword(inputData []string) []string {
 	var answer []string
 	numberOfPasswords, _ := strconv.Atoi(inputData[0])
 	for i := 0; i < numberOfPasswords*3; i = i + 3 {
+		// fmt.Printf("Comparing %v and %v\n", inputData[i+2], inputData[i+3])
 		if compareStrings(inputData[i+2], inputData[i+3]) {
-			answer = append(answer, "YES")
+			answer = append(answer, "Yes")
 		} else {
-			answer = append(answer, "NO")
+			answer = append(answer, "No")
 		}
 	}
 	return answer
