@@ -6,6 +6,24 @@ import (
 	"strings"
 )
 
+// task2 - Put in main and run
+// contentPoints := task1.ReadFromFile(task2File2)
+// contentRectangular := task1.ReadFromFile(task2File1)
+// var points = task2.ParsePoints(contentPoints)
+// var rect = task2.ParseNewRectangular(contentRectangular)
+// for _, p := range points {
+// 	if rect.CheckPoint(p) != -1 {
+// 		fmt.Println(p, rect.CheckPoint(p))
+// 	}
+// }
+
+const (
+	// os.Args[1]
+	task2File1 = "./files/task2_1.txt"
+	// os.Args[2]
+	task2File2 = "./files/task2_2.txt"
+)
+
 type point struct {
 	X float64
 	Y float64

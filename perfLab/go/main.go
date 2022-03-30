@@ -1,27 +1,40 @@
 package main
 
+import (
+	"go/task1"
+	"io/ioutil"
+	"log"
+)
+
 const (
 	task1File  = "./files/task1.txt"
 	task2File1 = "./files/task2_1.txt"
 	task2File2 = "./files/task2_2.txt"
+	task3File1 = "./files/task3_1.txt"
 )
 
 func main() {
-	// task1
-	// content := task1.ReadFromFile(task1File)
-	// contentSlice := task1.StringToStringSlice(content)
-	// intSlice := task1.StringSliceToIntSlice(contentSlice)
-	// max, min, mean, perc90 := task1.Statistics(intSlice)
-	// fmt.Printf("%v\n%v\n%v\n%v\n", max, min, mean, perc90)
+	// idealy code walk through the whole task3 directory
+	// and take all .txt files in
+	content := task1.ReadFromFile(task3File1)
+	stringSlice := task1.StringToStringSlice(content)
+	intSlice := task1.StringSliceToIntSlice(stringSlice)
+}
 
-	// task2
-	// contentPoints := task1.ReadFromFile(task2File2)
-	// contentRectangular := task1.ReadFromFile(task2File1)
-	// var points = task2.ParsePoints(contentPoints)
-	// var rect = task2.ParseNewRectangular(contentRectangular)
-	// for _, p := range points {
-	// 	if rect.CheckPoint(p) != -1 {
-	// 		fmt.Println(p, rect.CheckPoint(p))
-	// 	}
-	// }
+func sumIntervals(intervals [][]int) []int {
+	var sumSlice []int
+	for _, row := range intervals {
+		for i, val := range row {
+			sumSlice[i] += val
+		}
+	}
+	return sumSlice
+}
+
+func ReadFromFile(path []string) string {
+	content, err := ioutil.ReadFile(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return string(content)
 }

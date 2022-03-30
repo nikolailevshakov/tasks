@@ -8,6 +8,13 @@ import (
 	"strings"
 )
 
+// task1 - Put in main and run
+// content := task1.ReadFromFile(task1File)
+// contentSlice := task1.StringToStringSlice(content)
+// intSlice := task1.StringSliceToIntSlice(contentSlice)
+// max, min, mean, perc90 := task1.Statistics(intSlice)
+// fmt.Printf("%v\n%v\n%v\n%v\n", max, min, mean, perc90)
+
 const (
 	// os.Args[1]
 	Task1File = "./files/task1.txt"
